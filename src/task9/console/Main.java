@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         FileInputStream inputStream = new FileInputStream(args[0]);
         FileOutputStream outputStream = new FileOutputStream(args[1]);
-        int weightSum = Integer.getInteger(args[2]);
+        int weightSum = Integer.parseInt(args[2]);
 
         var weights = ArrayIO.getArray(inputStream);
 
