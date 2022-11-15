@@ -10,31 +10,31 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class ArrayIO {
-    public static Double[] getArray(InputStream stream) throws IOException {
-        List<Double> data = new ArrayList<>();
+    public static Integer[] getArray(InputStream stream) throws IOException {
+        List<Integer> data = new ArrayList<>();
         Scanner scanner = new Scanner(stream);
 
         scanner.useLocale(Locale.ROOT);
 
         while (scanner.hasNextDouble())
-            data.add(scanner.nextDouble());
+            data.add(scanner.nextInt());
 
         stream.close();
 
-        Double[] array = new Double[data.size()];
+        Integer[] array = new Integer[data.size()];
 
-        for (int i = 0; i < data.size(); i++){
+        for (int i = 0; i < data.size(); i++) {
             array[i] = data.get(i);
         }
 
         return array;
     }
 
-    public static String saveArray(OutputStream stream, List<List<Double>> array, boolean writeFile) throws IOException {
+    public static String saveArray(OutputStream stream, List<List<Integer>> array, boolean writeFile) throws IOException {
         StringBuilder builder = new StringBuilder();
 
-        for (var row : array){
-            for (var item : row){
+        for (var row : array) {
+            for (var item : row) {
                 builder.append(item).append(" ");
             }
             builder.append("\n");
@@ -42,7 +42,7 @@ public class ArrayIO {
 
         var data = builder.toString();
 
-        if (writeFile){
+        if (writeFile) {
             stream.write(data.getBytes(StandardCharsets.UTF_8));
             stream.close();
         }
