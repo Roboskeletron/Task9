@@ -1,6 +1,7 @@
 package task9.jtable;
 
 import task9.ArrayIO;
+import task9.WeightCalculator;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -31,6 +32,27 @@ public class MainForm extends JFrame {
         deleteWeightButton.addActionListener(this::deleteWeightButtonClicked);
         openCloseFileBtn.addActionListener(this::openCloseFileBtnClicked);
         saveFileButton.addActionListener(this::saveFileButtonClicked);
+        calculateButton.addActionListener(this::calculateButtonClicked);
+    }
+
+    private void calculateButtonClicked(ActionEvent actionEvent) {
+        try {
+            var text = weightSumInput.getText();
+            var model = (WeightsListTableModel) weightsList.getModel();
+
+            int weightSum = Integer.parseInt(text);
+            var weights = model.getDataFromVector();
+
+            var variants = WeightCalculator.getVariants(weights, weightSum);
+
+            text = "<html>"  +
+                    ArrayIO.saveArray(null, variants, false).
+                            replaceAll("\n", "<br>") + "</html>";
+            outputLabel.setText(text);
+        }
+        catch (Exception e){
+            catchException(e);
+        }
     }
 
     private void saveFileButtonClicked(ActionEvent actionEvent) {
