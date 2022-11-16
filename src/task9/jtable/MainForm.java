@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.Objects;
 
 public class MainForm extends JFrame {
@@ -20,6 +21,7 @@ public class MainForm extends JFrame {
     private JButton deleteWeightButton;
     private JButton openCloseFileBtn;
     private JButton saveFileButton;
+    private JCheckBox saveResultCheckBox;
 
     public MainForm(){
         setContentPane(panel);
@@ -45,8 +47,15 @@ public class MainForm extends JFrame {
 
             var variants = WeightCalculator.getVariants(weights, weightSum);
 
+            boolean writeFile = saveResultCheckBox.isSelected();
+
+            OutputStream stream = null;
+
+            if (writeFile)
+                stream = getFileStream(FileOutputStream.class);
+
             text = "<html>"  +
-                    ArrayIO.saveArray(null, variants, false).
+                    ArrayIO.saveArray(stream, variants, writeFile).
                             replaceAll("\n", "<br>") + "</html>";
             outputLabel.setText(text);
         }
@@ -128,6 +137,6 @@ public class MainForm extends JFrame {
     }
 
     private void catchException(Exception e){
-
+        e.printStackTrace();
     }
 }
