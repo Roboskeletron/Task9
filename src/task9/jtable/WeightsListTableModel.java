@@ -3,16 +3,14 @@ package task9.jtable;
 import javax.swing.table.DefaultTableModel;
 
 public class WeightsListTableModel extends DefaultTableModel {
+    public WeightsListTableModel(){
+        setColumnIdentifiers(new String[] {"Weights"});
+    }
+
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return Integer.class;
     }
-
-    @Override
-    public String getColumnName(int column) {
-        return "Weights";
-    }
-
 
     public void setDataVector(Integer[] weights) {
         Integer[][] dataVector = new Integer[weights.length][1];
@@ -27,6 +25,7 @@ public class WeightsListTableModel extends DefaultTableModel {
         if (dataVector.size() < 10) {
             Integer[] row = new Integer[]{0};
             addRow(row);
+            fireTableDataChanged();
             return;
         }
 
@@ -34,14 +33,16 @@ public class WeightsListTableModel extends DefaultTableModel {
     }
 
     public void deleteRow() {
-        if (dataVector.size() > 0)
+        if (dataVector.size() > 0) {
             dataVector.remove(dataVector.size() - 1);
+            fireTableDataChanged();
+        }
     }
 
-    public Integer[] getDataFromVector(){
+    public Integer[] getDataFromVector() {
         Integer[] data = new Integer[dataVector.size()];
 
-        for (int i = 0; i < data.length; i++){
+        for (int i = 0; i < data.length; i++) {
             data[i] = (Integer) dataVector.get(i).get(0);
         }
 
