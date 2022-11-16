@@ -1,5 +1,7 @@
 package task9.jtable;
 
+import task9.ArrayIO;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.FileInputStream;
@@ -23,7 +25,7 @@ public class MainForm extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
 
-        weightsList.setModel(new TableModel());
+        weightsList.setModel(new WeightsListTableModel());
 
         addWeightButton.addActionListener(this::addWeightButtonClicked);
         deleteWeightButton.addActionListener(this::deleteWeightButtonClicked);
@@ -37,12 +39,20 @@ public class MainForm extends JFrame {
 
     private void openCloseFileBtnClicked(ActionEvent actionEvent) {
         try {
+            var model = (WeightsListTableModel) weightsList.getModel();
+
             if (Objects.equals(actionEvent.getActionCommand(), "Open")) {
+                var stream = getFileStream(FileInputStream.class);
+                var weights = ArrayIO.getArray(stream);
+
+                model.setDataVector(weights);
                 openCloseFileBtn.setText("Close");
             } else {
-
+                model.getDataVector().clear();
                 openCloseFileBtn.setText("Open");
             }
+
+            model.fireTableDataChanged();
         }
         catch (Exception e){
             e.printStackTrace();
