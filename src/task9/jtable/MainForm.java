@@ -34,7 +34,17 @@ public class MainForm extends JFrame {
     }
 
     private void saveFileButtonClicked(ActionEvent actionEvent) {
+        try {
+            var model = (WeightsListTableModel) weightsList.getModel();
 
+            var data = model.getDataFromVector();
+            var stream = getFileStream(FileOutputStream.class);
+
+            ArrayIO.saveArray(stream, ArrayConvertor.array1DtoList2D(data), true);
+        }
+        catch (Exception e){
+            catchException(e);
+        }
     }
 
     private void openCloseFileBtnClicked(ActionEvent actionEvent) {
@@ -55,15 +65,20 @@ public class MainForm extends JFrame {
             model.fireTableDataChanged();
         }
         catch (Exception e){
-            e.printStackTrace();
+            catchException(e);
         }
     }
 
     private void deleteWeightButtonClicked(ActionEvent actionEvent) {
+        var model = (WeightsListTableModel) weightsList.getModel();
+
+        model.deleteRow();
     }
 
     private void addWeightButtonClicked(ActionEvent e){
+        var model = (WeightsListTableModel) weightsList.getModel();
 
+        model.addRow();
     }
 
     private <T> T getFileStream(Class<T> type) throws FileNotFoundException {
@@ -88,5 +103,9 @@ public class MainForm extends JFrame {
         else stream = (T) new FileOutputStream(file);
 
         return stream;
+    }
+
+    private void catchException(Exception e){
+
     }
 }
